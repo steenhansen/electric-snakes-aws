@@ -1,0 +1,7 @@
+{
+  "domain_name": "steen.click",
+  "backend_subdomain": "backend-snakes",
+  "frontend_subdomain": "frontend-snakes",
+  "backend_dev_subdomain": "dev-backend-snakes",
+  "frontend_dev_subdomain": "dev-frontend-snakes"
+}
