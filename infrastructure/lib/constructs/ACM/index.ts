@@ -5,7 +5,7 @@ import {
 import { IHostedZone } from 'aws-cdk-lib/aws-route53';
 import { Construct } from 'constructs';
 
-import { domain_name } from '../../../../config.json';
+import { domain_name } from '../../../../../electric-snakes-aws.config.json';
 
 interface Props {
   hosted_zone: IHostedZone;

@@ -20,7 +20,7 @@ export class RDS extends Construct {
     super(scope, id);
 
     const instance_id = `my-sql-instance-${process.env.NODE_ENV}`;
-    const credentials_secret_name = `chapter-5/rds/${instance_id}`;
+    const credentials_secret_name = `chapter-6/rds/${instance_id}`;
 
     this.credentials = new rds.DatabaseSecret(
       scope,
@@ -46,7 +46,7 @@ export class RDS extends Construct {
           ec2.InstanceSize.SMALL,
         ),
         port: 3306,
-        publiclyAccessible: false,
+        publiclyAccessible: true,
         vpc: props.vpc,
         vpcSubnets: {
           onePerAz: false,

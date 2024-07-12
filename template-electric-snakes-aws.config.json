@@ -1,0 +1,21 @@
+{
+  "NB-this-config-file-resides-one-folder-up-outside-git-as": "electric-snakes-aws.config.json",
+  "domain_name": "steenhansen.click",
+  "backend_subdomain": "backend-steen-hansen",
+  "frontend_subdomain": "frontend-steen-hansen",
+  "backend_dev_subdomain": "dev-backend-steen-hansen",
+  "frontend_dev_subdomain": "dev-frontend-steen-hansen",
+  "github_owner": "steenhansen",
+  "github_repo": "electric-snakes-aws",
+  "github_token": "github_pat_1_012345678901234567890123456789012345678901234567890123456789012345678901234567_R",
+  "slack_prod_channel_id": "C_0123456_M",
+  "slack_dev_channel_id": "C_0123456_W",
+  "slack_workspace_id": "T_0123456_B",
+  "prod_branch": "main",
+  "dev_branch": "dev",
+  "prod_pipeline_tag": "prod-pipeline",
+  "dev_pipeline_tag": "dev-pipeline",
+  "prod_devel": "Development",
+  "_prod_devel_1": "Production",
+  "_prod_devel_2": "Development"
+}

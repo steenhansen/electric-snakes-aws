@@ -1,8 +1,4 @@
-import {
-  BlockPublicAccess,
-  Bucket,
-  BucketAccessControl,
-} from 'aws-cdk-lib/aws-s3';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import { resolve } from 'path';
@@ -15,7 +11,7 @@ import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import { Route53 } from '../Route53';
 import { ACM } from '../ACM';
 
-import config from '../../../../config.json';
+import config from '../../../../../electric-snakes-aws.config.json';
 
 interface Props {
   acm: ACM;
@@ -38,14 +34,12 @@ export class S3 extends Construct {
       scope,
       `WebBucket-${process.env.NODE_ENV || ''}`,
       {
-        bucketName: `chapter-5-web-bucket-${unique_id}-${(
+        bucketName: `chapter-6-web-bucket-${unique_id}-${(
           process.env.NODE_ENV || ''
         ).toLocaleLowerCase()}`,
         websiteIndexDocument: 'index.html',
         websiteErrorDocument: 'index.html',
         publicReadAccess: true,
-        blockPublicAccess: BlockPublicAccess.BLOCK_ACLS,
-        accessControl: BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
         removalPolicy: RemovalPolicy.DESTROY,
         autoDeleteObjects: true,
       },

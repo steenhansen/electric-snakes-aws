@@ -8,7 +8,7 @@ import { S3 } from './constructs/S3';
 import { Route53 } from './constructs/Route53';
 import { ACM } from './constructs/ACM';
 
-export class Chapter5Stack extends Stack {
+export class Chapter6Stack extends Stack {
   public readonly acm: ACM;
 
   public readonly ecs: ECS;
@@ -52,7 +52,6 @@ export class Chapter5Stack extends Stack {
           subnetType: SubnetType.PRIVATE_ISOLATED,
         },
       ],
-      maxAzs: 2,
     });
 
     this.s3 = new S3(this, `S3-${process.env.NODE_ENV || ''}`, {
@@ -65,7 +64,6 @@ export class Chapter5Stack extends Stack {
     });
 
     this.ecs = new ECS(this, `ECS-${process.env.NODE_ENV || ''}`, {
-      rds: this.rds,
       vpc: this.vpc,
       acm: this.acm,
       route53: this.route53,

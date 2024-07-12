@@ -1,22 +1,25 @@
 {
-  "name": "chapter-5",
+  "name": "chapter-6",
   "version": "0.1.0",
+  "license": "MIT",
   "bin": {
-    "chapter-5": "bin/chapter-5.js"
+    "chapter-6": "bin/chapter-6.js"
   },
   "scripts": {
-    "build:frontend": "cd ../web && yarn install && yarn build",
+    "build:frontend": "cd ../web && yarn install && yarn build:dev",
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "jest",
+    "test": "yarn build && jest",
     "cdk:dev": "cross-env NODE_ENV=Development DOTENV_CONFIG_PATH=./.env.development CDK_MODE=ONLY_DEV cdk",
-    "cdk": "cross-env NODE_ENV=Production DOTENV_CONFIG_PATH=./.env.production CDK_MODE=ONLY_PROD cdk",
+    "cdk:testing": "cross-env NODE_ENV=Development DOTENV_CONFIG_PATH=./.env.testing     CDK_MODE=ONLY_DEV cdk",
+    "cdk:prod": "cross-env NODE_ENV=Production CDK_MODE=ONLY_PROD cdk",
+    "___cdk": "cross-env NODE_ENV=Production  DOTENV_CONFIG_PATH=./.env.production  CDK_MODE=ONLY_PROD cdk",
     "cdk:pipeline": "cross-env CDK_MODE=ONLY_PIPELINE cdk"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
-    "@types/jest": "^27.5.0",
+    "@types/jest": "^29.2.0",
     "@types/lodash": "^4.14.186",
     "@types/node": "10.17.27",
     "@types/prettier": "2.6.0",
@@ -32,12 +35,12 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.0.0",
-    "jest": "^27.5.1",
+    "jest": "^29.2.2",
     "prettier": "^2.7.1",
     "ts-jest": "^27.1.4",
     "ts-node": "^10.7.0",
     "ts-node-dev": "^2.0.0",
-    "typescript": "~3.9.7"
+    "typescript": "4.9.3"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.121.0",
@@ -50,5 +53,10 @@
     "lodash": "^4.17.21",
     "source-map-support": "^0.5.21",
     "uuid": "^8.3.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ]
   }
 }

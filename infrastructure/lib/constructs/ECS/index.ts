@@ -14,12 +14,10 @@ import { ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { LoadBalancerTarget } from 'aws-cdk-lib/aws-route53-targets';
 import { ACM } from '../ACM';
 import { Route53 } from '../Route53';
-import { RDS } from '../RDS';
 
-import config from '../../../../config.json';
+import config from '../../../../../electric-snakes-aws.config.json';
 
 interface Props {
-  rds: RDS;
   vpc: Vpc;
   acm: ACM;
   route53: Route53;
@@ -47,7 +45,7 @@ export class ECS extends Construct {
       scope,
       `ECSLogGroup-${process.env.NODE_ENV || ''}`,
       {
-        logGroupName: `ecs-logs-chapter-5-${process.env.NODE_ENV || ''}`,
+        logGroupName: `ecs-logs-chapter-6-${process.env.NODE_ENV || ''}`,
         retention: RetentionDays.ONE_DAY,
         removalPolicy: RemovalPolicy.DESTROY,
       },
@@ -79,11 +77,10 @@ export class ECS extends Construct {
         ),
         environment: {
           NODE_ENV: process.env.NODE_ENV as string,
-          RDS_HOST: props.rds.instance.instanceEndpoint.hostname,
         },
         memoryLimitMiB: 256,
         logging: ecs.LogDriver.awsLogs({
-          streamPrefix: `chapter5-${process.env.NODE_ENV || ''}`,
+          streamPrefix: `chapter6-${process.env.NODE_ENV || ''}`,
           logGroup: this.log_group,
         }),
       },
@@ -109,7 +106,7 @@ export class ECS extends Construct {
       {
         vpc: props.vpc,
         internetFacing: true,
-        loadBalancerName: `chapter5-lb-${process.env.NODE_ENV || ''}`,
+        loadBalancerName: `chapter6-lb-${process.env.NODE_ENV || ''}`,
       },
     );
 
