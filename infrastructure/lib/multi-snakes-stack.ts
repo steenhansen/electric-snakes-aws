@@ -7,8 +7,9 @@ import { RDS } from './constructs/RDS';
 import { S3 } from './constructs/S3';
 import { Route53 } from './constructs/Route53';
 import { ACM } from './constructs/ACM';
+import { DynamoDB } from './constructs/DynamoDB';
 
-export class Chapter5Stack extends Stack {
+export class MultiSnakeStack extends Stack {
   public readonly acm: ACM;
 
   public readonly ecs: ECS;
@@ -20,9 +21,12 @@ export class Chapter5Stack extends Stack {
   public readonly s3: S3;
 
   public readonly vpc: Vpc;
+  public readonly dynamodb: DynamoDB;
 
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
+
+    this.dynamodb = new DynamoDB(this, `DynamoDb-${process.env.NODE_ENV || ''}`);
 
     this.route53 = new Route53(this, `Route53-${process.env.NODE_ENV || ''}`);
 
@@ -52,7 +56,6 @@ export class Chapter5Stack extends Stack {
           subnetType: SubnetType.PRIVATE_ISOLATED,
         },
       ],
-      maxAzs: 2,
     });
 
     this.s3 = new S3(this, `S3-${process.env.NODE_ENV || ''}`, {
@@ -69,6 +72,7 @@ export class Chapter5Stack extends Stack {
       vpc: this.vpc,
       acm: this.acm,
       route53: this.route53,
+      dynamodb: this.dynamodb,
     });
 
     this.rds.instance.connections.allowFrom(this.ecs.cluster, Port.tcp(3306));

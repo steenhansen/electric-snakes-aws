@@ -19,6 +19,11 @@ import { SlackChannelConfiguration } from 'aws-cdk-lib/aws-chatbot';
 import { NotificationRule } from 'aws-cdk-lib/aws-codestarnotifications';
 import { pipelineConfig } from '../../../utils/pipelineConfig';
 
+
+
+import { github_owner, github_repo } from '../../../../../electric-snakes-aws.config.json';
+
+
 interface Props {
   environment: string;
 }
@@ -66,9 +71,9 @@ export class PipelineStack extends Construct {
     /* ---------- Pipeline Build Projects ---------- */
     this.backEndTestProject = new PipelineProject(
       scope,
-      `Chapter5-BackEndTest-PipelineProject-${props.environment}`,
+      `Chapter6-BackEndTest-PipelineProject-${props.environment}`,
       {
-        projectName: `Chapter5-BackEndTest-PipelineProject-${props.environment}`,
+        projectName: `Chapter6-BackEndTest-PipelineProject-${props.environment}`,
         environment: {
           buildImage: LinuxBuildImage.fromCodeBuildImageId(
             'aws/codebuild/amazonlinux2-x86_64-standard:4.0',
@@ -97,9 +102,9 @@ export class PipelineStack extends Construct {
 
     this.deployProject = new PipelineProject(
       this,
-      `Chapter5-BackEndBuild-PipelineProject-${props.environment}`,
+      `Chapter6-BackEndBuild-PipelineProject-${props.environment}`,
       {
-        projectName: `Chapter5-BackEndBuild-PipelineProject-${props.environment}`,
+        projectName: `Chapter6-BackEndBuild-PipelineProject-${props.environment}`,
         environment: {
           privileged: true,
           buildImage: LinuxBuildImage.fromCodeBuildImageId(
@@ -148,9 +153,9 @@ export class PipelineStack extends Construct {
 
     this.frontEndTestProject = new PipelineProject(
       scope,
-      `Chapter5-FrontEndTest-PipelineProject-${props.environment}`,
+      `Chapter6-FrontEndTest-PipelineProject-${props.environment}`,
       {
-        projectName: `Chapter5-FrontEndTest-PipelineProject-${props.environment}`,
+        projectName: `Chapter6-FrontEndTest-PipelineProject-${props.environment}`,
         environment: {
           buildImage: LinuxBuildImage.fromCodeBuildImageId(
             'aws/codebuild/amazonlinux2-x86_64-standard:4.0',
@@ -182,9 +187,11 @@ export class PipelineStack extends Construct {
       scope,
       `BackendTest-Pipeline-${props.environment}`,
       {
-        pipelineName: `Chapter5-Pipeline-${props.environment}`,
+        pipelineName: `Chapter6-Pipeline-${props.environment}`,
       },
     );
+
+
 
     /* ---------- Stages ---------- */
     this.pipeline.addStage({
@@ -192,8 +199,8 @@ export class PipelineStack extends Construct {
       actions: [
         new GitHubSourceAction({
           actionName: 'Source',
-          owner: 'westpoint-io',
-          repo: 'AWS-CDK-in-Action-Chapter-5',
+          owner: github_owner,
+          repo: github_repo,
           branch: `${branch}`,
           oauthToken: secretToken,
           output: outputSource,
@@ -243,13 +250,14 @@ export class PipelineStack extends Construct {
       `${props.environment}-Pipeline-SlackNotificationsTopic`,
     );
 
-    const slackConfig = new SlackChannelConfiguration(this, 'SlackChannel', {
+    const the_slack = {
       slackChannelConfigurationName: `${props.environment}-Pipeline-Slack-Channel-Config`,
       slackWorkspaceId: workspaceId || '',
       slackChannelId: channelId || '',
-    });
+    };
+    const slackConfig = new SlackChannelConfiguration(this, 'SlackChannel', the_slack);
 
-    const rule = new NotificationRule(this, 'NotificationRule', {
+    const the_notification = {
       source: this.pipeline,
       events: [
         'codepipeline-pipeline-pipeline-execution-failed',
@@ -260,8 +268,8 @@ export class PipelineStack extends Construct {
         'codepipeline-pipeline-manual-approval-needed',
       ],
       targets: [snsTopic],
-    });
-
+    };
+    const rule = new NotificationRule(this, 'NotificationRule', the_notification);
     rule.addTarget(slackConfig);
 
     /* ---------- Tags ---------- */
