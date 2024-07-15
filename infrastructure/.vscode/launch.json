@@ -12,7 +12,7 @@
             "-r", "./node_modules/ts-node/register/transpile-only"
         ],
         "args": [
-            "${workspaceFolder}/bin/chapter-6.ts"
+            "${workspaceFolder}/bin/multi-snakes.ts"
         ],
         "env": {
           "CDK_MODE": "ONLY_DEV",

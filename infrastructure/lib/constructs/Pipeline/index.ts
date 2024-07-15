@@ -199,8 +199,8 @@ export class PipelineStack extends Construct {
       actions: [
         new GitHubSourceAction({
           actionName: 'Source',
-          owner: github_owner, // 'steenhansen',
-          repo: github_repo, //'electric-snakes-aws',
+          owner: github_owner,
+          repo: github_repo,
           branch: `${branch}`,
           oauthToken: secretToken,
           output: outputSource,
@@ -255,15 +255,7 @@ export class PipelineStack extends Construct {
       slackWorkspaceId: workspaceId || '',
       slackChannelId: channelId || '',
     };
-    console.log("******* workspaceId,  channelId", workspaceId, channelId);
-    console.log("******* the_slack", the_slack);
     const slackConfig = new SlackChannelConfiguration(this, 'SlackChannel', the_slack);
-
-    // const slackConfig = new SlackChannelConfiguration(this, 'SlackChannel', {
-    //   slackChannelConfigurationName: `${props.environment}-Pipeline-Slack-Channel-Config`,
-    //   slackWorkspaceId: workspaceId || '',
-    //   slackChannelId: channelId || '',
-    // });
 
     const the_notification = {
       source: this.pipeline,
@@ -277,23 +269,7 @@ export class PipelineStack extends Construct {
       ],
       targets: [snsTopic],
     };
-    console.log("******* the_notification", the_notification);
     const rule = new NotificationRule(this, 'NotificationRule', the_notification);
-    console.log("******* the_notification", the_notification);
-
-    // const rule = new NotificationRule(this, 'NotificationRule', {
-    //   source: this.pipeline,
-    //   events: [
-    //     'codepipeline-pipeline-pipeline-execution-failed',
-    //     'codepipeline-pipeline-pipeline-execution-canceled',
-    //     'codepipeline-pipeline-pipeline-execution-started',
-    //     'codepipeline-pipeline-pipeline-execution-resumed',
-    //     'codepipeline-pipeline-pipeline-execution-succeeded',
-    //     'codepipeline-pipeline-manual-approval-needed',
-    //   ],
-    //   targets: [snsTopic],
-    // });
-
     rule.addTarget(slackConfig);
 
     /* ---------- Tags ---------- */

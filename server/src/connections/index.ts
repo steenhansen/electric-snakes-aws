@@ -31,9 +31,9 @@ const getSecretValue = async (secretId: string) => {
 export const init = () => {
   console.log(
     'SecretId: ',
-    `chapter-5/rds/my-sql-instance-${process.env.NODE_ENV}`,
+    `multi-snakes/rds/my-sql-instance-${process.env.NODE_ENV}`,
   );
-  getSecretValue(`chapter-5/rds/my-sql-instance-${process.env.NODE_ENV}`)
+  getSecretValue(`multi-snakes/rds/my-sql-instance-${process.env.NODE_ENV}`)
     .then(({ password, username, host }) => {
       pool = mysql.createPool({
         host,

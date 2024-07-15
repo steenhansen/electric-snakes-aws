@@ -14,13 +14,17 @@ import { ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { LoadBalancerTarget } from 'aws-cdk-lib/aws-route53-targets';
 import { ACM } from '../ACM';
 import { Route53 } from '../Route53';
+import { DynamoDB } from '../DynamoDB';
+import { RDS } from '../RDS';
 
 import config from '../../../../../electric-snakes-aws.config.json';
 
 interface Props {
+  rds: RDS;
   vpc: Vpc;
   acm: ACM;
   route53: Route53;
+  dynamodb: DynamoDB,
 }
 
 export class ECS extends Construct {
@@ -45,7 +49,7 @@ export class ECS extends Construct {
       scope,
       `ECSLogGroup-${process.env.NODE_ENV || ''}`,
       {
-        logGroupName: `ecs-logs-chapter-6-${process.env.NODE_ENV || ''}`,
+        logGroupName: `ecs-logs-multi-snakes-${process.env.NODE_ENV || ''}`,
         retention: RetentionDays.ONE_DAY,
         removalPolicy: RemovalPolicy.DESTROY,
       },
@@ -80,7 +84,7 @@ export class ECS extends Construct {
         },
         memoryLimitMiB: 256,
         logging: ecs.LogDriver.awsLogs({
-          streamPrefix: `chapter6-${process.env.NODE_ENV || ''}`,
+          streamPrefix: `test-multi-snakes-${process.env.NODE_ENV || ''}`,    ////////////////////////////////////  error make CONSTANT
           logGroup: this.log_group,
         }),
       },
@@ -106,7 +110,7 @@ export class ECS extends Construct {
       {
         vpc: props.vpc,
         internetFacing: true,
-        loadBalancerName: `chapter6-lb-${process.env.NODE_ENV || ''}`,
+        loadBalancerName: `test-multi-snakes-lb-${process.env.NODE_ENV || ''}`,  ////////////////////////////////////  error make CONSTANT
       },
     );
 

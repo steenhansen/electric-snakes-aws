@@ -3,15 +3,15 @@ import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { config } from 'dotenv';
 
-import { Chapter6Stack } from '../lib/chapter-6-stack';
-import { Chapter6PipelineStack } from '../lib/chapter-6-pipeline-stack';
+import { MultiSnakeStack } from '../lib/multi-snakes-stack';
+import { Chapter6PipelineStack } from '../lib/multi-snakes-pipeline-stack';
 
 config({ path: '.env.production' });
 
 const app = new cdk.App();
 
 if (['ONLY_DEV'].includes(process.env.CDK_MODE || '')) {
-  new Chapter6Stack(app, `Chapter6Stack-${process.env.NODE_ENV || ''}`, {
+  new MultiSnakeStack(app, `MultiSnakeStack-${process.env.NODE_ENV || ''}`, {
     env: {
       region: process.env.CDK_DEFAULT_REGION,
       account: process.env.CDK_DEFAULT_ACCOUNT,
@@ -20,7 +20,7 @@ if (['ONLY_DEV'].includes(process.env.CDK_MODE || '')) {
 }
 
 if (['ONLY_PROD'].includes(process.env.CDK_MODE || '')) {
-  new Chapter6Stack(app, `Chapter6Stack-${process.env.NODE_ENV || ''}`, {
+  new MultiSnakeStack(app, `MultiSnakeStack-${process.env.NODE_ENV || ''}`, {
     env: {
       region: process.env.CDK_DEFAULT_REGION,
       account: process.env.CDK_DEFAULT_ACCOUNT,

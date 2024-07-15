@@ -17,5 +17,7 @@
   "dev_pipeline_tag": "dev-pipeline",
   "prod_devel": "Development",
   "_prod_devel_1": "Production",
-  "_prod_devel_2": "Development"
+  "_prod_devel_2": "Development",
+  "project_name": "multi-snakes..electric-snakes",
+  "email_name": "ray_ray@yahoo.com"
 }

@@ -1,7 +1,7 @@
 import { HostedZone, IHostedZone } from 'aws-cdk-lib/aws-route53';
 import { Construct } from 'constructs';
 
-import config from '../../../../config.json';
+import config from '../../../../../electric-snakes-aws.config.json';
 
 export class Route53 extends Construct {
   public readonly hosted_zone: IHostedZone;

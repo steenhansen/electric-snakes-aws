@@ -1,23 +1,23 @@
 import { App, Stack } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import { config } from 'dotenv';
-import { Chapter6Stack } from '../lib/chapter-6-stack';
+import { MultiSnakeStack } from '../lib/multi-snakes-stack';
 
 const { parsed } = config({ path: '.env.testing' });
 
-describe('Testing Chapter 6 code.', () => {
+describe('Testing Multi Snakes code.', () => {
   // Using assertion tests:
   test('The stack has a ECS cluster configured in the right way.', () => {
     const app = new App();
 
-    const chapter6Stack = new Chapter6Stack(app, 'Chapter6Stack', {
+    const multi_snake_stack = new MultiSnakeStack(app, 'MultiSnakeStack', {
       env: {
         region: parsed?.CDK_DEFAULT_REGION,
         account: parsed?.CDK_DEFAULT_ACCOUNT,
       },
     });
 
-    const template = Template.fromStack(chapter6Stack);
+    const template = Template.fromStack(multi_snake_stack);
 
     template.resourceCountIs('AWS::ECS::Cluster', 1);
 
@@ -44,7 +44,7 @@ describe('Testing Chapter 6 code.', () => {
               'awslogs-group': {
                 Ref: Match.stringLikeRegexp('ECSLogGroup'),
               },
-              'awslogs-stream-prefix': Match.stringLikeRegexp('chapter6'),
+              'awslogs-stream-prefix': Match.stringLikeRegexp('test-multi-snakes'),     ////////////////////////////////////  error make CONSTANT
               'awslogs-region': Match.stringLikeRegexp(
                 parsed?.CDK_DEFAULT_REGION as string,
               ),
@@ -115,14 +115,14 @@ describe('Testing Chapter 6 code.', () => {
   test('The stack has a RDS instance configured in the right way.', () => {
     const app = new App();
 
-    const chapter6Stack = new Chapter6Stack(app, 'Chapter6Stack', {
+    const multi_snake_stack = new MultiSnakeStack(app, 'MultiSnakeStack', {
       env: {
         region: parsed?.CDK_DEFAULT_REGION,
         account: parsed?.CDK_DEFAULT_ACCOUNT,
       },
     });
 
-    const template = Template.fromStack(chapter6Stack);
+    const template = Template.fromStack(multi_snake_stack);
 
     template.resourceCountIs('AWS::RDS::DBInstance', 1);
 
@@ -195,14 +195,14 @@ describe('Testing Chapter 6 code.', () => {
   test('The stack has the VPC configured in the right way.', () => {
     const app = new App();
 
-    const chapter6Stack = new Chapter6Stack(app, 'Chapter6Stack', {
+    const multi_snake_stack = new MultiSnakeStack(app, 'MultiSnakeStack', {
       env: {
         region: parsed?.CDK_DEFAULT_REGION,
         account: parsed?.CDK_DEFAULT_ACCOUNT,
       },
     });
 
-    const template = Template.fromStack(chapter6Stack);
+    const template = Template.fromStack(multi_snake_stack);
 
     template.resourceCountIs('AWS::EC2::VPC', 1);
 
@@ -224,14 +224,14 @@ describe('Testing Chapter 6 code.', () => {
   it('Matches the snapshot.', () => {
     const stack = new Stack();
 
-    const chapter6Stack = new Chapter6Stack(stack, 'Chapter6Stack', {
+    const multi_snake_stack = new MultiSnakeStack(stack, 'MultiSnakeStack', {
       env: {
         region: parsed?.CDK_DEFAULT_REGION,
         account: parsed?.CDK_DEFAULT_ACCOUNT,
       },
     });
 
-    const template = Template.fromStack(chapter6Stack);
+    const template = Template.fromStack(multi_snake_stack);
 
     expect(template.toJSON()).toMatchSnapshot();
   });
