@@ -15,7 +15,7 @@ const the_json = {
 
 gulp.task('default', function (cb) {
   const stringified = JSON.stringify(the_json, null, 2);
-  fs.writeFileSync('config.json', stringified);
+  fs.writeFileSync('./src/config.json', stringified);
   console.log("server config.js");
   cb();
 });

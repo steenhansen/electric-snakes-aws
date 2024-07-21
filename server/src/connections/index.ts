@@ -6,7 +6,7 @@ import {
   SecretsManagerClient,
 } from '@aws-sdk/client-secrets-manager';
 
-import stack_config from '../../config.json';
+import stack_config from '../config.json';
 
 
 dotenv.config();
