@@ -1,0 +1,13 @@
+{
+  "DOMAIN_NAME": "steenhansen.click",
+  "BACKEND_SUBDOMAIN": "backend-steen-hansen",
+  "BACKEND_DEV_SUBDOMAIN": "dev-backend-steen-hansen",
+  "FRONTEND_SUBDOMAIN": "frontend-steen-hansen",
+  "FRONTEND_DEV_SUBDOMAIN": "dev-frontend-steen-hansen",
+  "GITHUB_OWNER": "steenhansen",
+  "GITHUB_REPO": "electric-snakes-aws",
+  "UNIQUE_S3_ID": "ElSn_akemxdjqkl",
+  "STACK_NAME": "ElSn",
+  "LINUX_IMAGE": "aws/codebuild/amazonlinux2-x86_64-standard:4.0",
+  "INSTANCE_TYPE": "t2.micro"
+}
