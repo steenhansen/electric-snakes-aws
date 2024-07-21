@@ -1,0 +1,6 @@
+{
+  "domain_name": "steenhansen.click",
+  "backend_subdomain": "backend-steen-hansen",
+  "backend_dev_subdomain": "dev-backend-steen-hansen",
+  "STACK_NAME": "ElSn"
+}
