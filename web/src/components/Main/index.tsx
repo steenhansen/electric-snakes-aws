@@ -8,12 +8,21 @@ import { Todo } from '../Todo';
 
 import { MainContainer } from './styles';
 
-import config from '../../../../../electric-snakes-aws.config.json';
+import config from '@web/outside-config/config.json';
 
 /* ----------
  * Add backend URL provided by the cdk deploy here!
  * ---------- */
-const backend_url = `https://${process.env.REACT_APP_ENV === 'Production' ? config.backend_subdomain : config.backend_dev_subdomain}.${config.domain_name}`;
+
+let backend_subdomain = config.backend_dev_subdomain;
+if (process.env.REACT_APP_ENV === 'Production') {
+  backend_subdomain = config.backend_subdomain;
+  // } else {
+  //   var backend_subdomain = config.backend_dev_subdomain;
+}
+const backend_url = `https://${backend_subdomain}.${config.domain_name}`;
+
+//const backend_url = `https://${process.env.REACT_APP_ENV === 'Production' ? config.backend_subdomain : config.backend_dev_subdomain}.${DOMAIN_NAME}`;
 
 export const Main: React.FC = () => {
   /* ----------

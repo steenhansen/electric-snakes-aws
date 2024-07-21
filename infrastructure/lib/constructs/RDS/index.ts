@@ -6,6 +6,21 @@ import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { DockerImageCode } from 'aws-cdk-lib/aws-lambda';
 
 import { CDKResourceInitializer } from './custom';
+import stack_config from '../../../../../electric-snakes-aws.config.json';
+const THE_ENV = process.env.NODE_ENV || '';
+import {
+  namedMysqlRdsInstanceLabel, mysqlInstanceIdEnvLabel, mysqlCredentialsEnvLabel, mysqlRdsInstanceEnvLabel,
+  myRdsInitEnvLabel, rdsInitFnResponseEnvLabel
+} from '../../../construct_labels';
+
+const mysqlRdsInstanceIdEnv_label = mysqlInstanceIdEnvLabel(THE_ENV);
+const namedMysqlRdsInstance_label = namedMysqlRdsInstanceLabel(THE_ENV);
+const mysqlCredentialsEnv_label = mysqlCredentialsEnvLabel(THE_ENV);
+const mysqlRdsInstanceEnv_label = mysqlRdsInstanceEnvLabel(THE_ENV);
+
+const myRdsInitEnv_label = myRdsInitEnvLabel(THE_ENV);
+const rdsInitFnResponseEnv_label = rdsInitFnResponseEnvLabel(THE_ENV);
+
 
 interface Props {
   vpc: ec2.Vpc;
@@ -19,12 +34,10 @@ export class RDS extends Construct {
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id);
 
-    const instance_id = `my-sql-instance-${process.env.NODE_ENV}`;
-    const credentials_secret_name = `multi-snakes/rds/${instance_id}`;
+    const credentials_secret_name = namedMysqlRdsInstance_label;
 
     this.credentials = new rds.DatabaseSecret(
-      scope,
-      `MySQLCredentials-${process.env.NODE_ENV || ''}`,
+      scope, mysqlCredentialsEnv_label,
       {
         secretName: credentials_secret_name,
         username: 'admin',
@@ -32,21 +45,20 @@ export class RDS extends Construct {
     );
 
     this.instance = new rds.DatabaseInstance(
-      scope,
-      `MySQL-RDS-Instance-${process.env.NODE_ENV || ''}`,
+      scope, mysqlRdsInstanceEnv_label,
       {
         credentials: rds.Credentials.fromSecret(this.credentials),
         databaseName: 'todolist',
         engine: rds.DatabaseInstanceEngine.mysql({
           version: rds.MysqlEngineVersion.VER_8_0_28,
         }),
-        instanceIdentifier: instance_id,
+        instanceIdentifier: mysqlRdsInstanceIdEnv_label,
         instanceType: ec2.InstanceType.of(
           ec2.InstanceClass.T2,
           ec2.InstanceSize.SMALL,
         ),
         port: 3306,
-        publiclyAccessible: true,
+        publiclyAccessible: false,
         vpc: props.vpc,
         vpcSubnets: {
           onePerAz: false,
@@ -55,15 +67,15 @@ export class RDS extends Construct {
       },
     );
 
+    const dir_name_init = `${__dirname}/init`;
     const initializer = new CDKResourceInitializer(
-      scope,
-      `MyRdsInit-${process.env.NODE_ENV || ''}`,
+      scope, myRdsInitEnv_label,
       {
         config: {
           credentials_secret_name,
         },
         function_log_retention: RetentionDays.FIVE_MONTHS,
-        function_code: DockerImageCode.fromImageAsset(`${__dirname}/init`, {}),
+        function_code: DockerImageCode.fromImageAsset(dir_name_init, {}),
         function_timeout: Duration.minutes(2),
         function_security_groups: [],
         vpc: props.vpc,
@@ -86,7 +98,7 @@ export class RDS extends Construct {
      * Returns the initializer function response,
      * to check if the SQL was successful or not
      * ---------- */
-    new CfnOutput(scope, `RdsInitFnResponse-${process.env.NODE_ENV || ''}`, {
+    new CfnOutput(scope, rdsInitFnResponseEnv_label, {
       value: Token.asString(initializer.response),
     });
   }

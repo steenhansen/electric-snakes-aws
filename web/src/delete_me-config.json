@@ -1,8 +1,0 @@
-{
-  "this_is_replaced_by": "electric-snakes-aws.config.json",
-  "_domain_name": "cdkbook.click",
-  "_backend_subdomain": "backend-cdk-book",
-  "_frontend_subdomain": "frontend-cdk-book",
-  "_backend_dev_subdomain": "dev-backend-cdk-book",
-  "_frontend_dev_subdomain": "dev-frontend-cdk-book"
-}

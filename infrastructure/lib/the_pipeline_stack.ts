@@ -4,9 +4,14 @@ import { IRepository } from 'aws-cdk-lib/aws-ecr';
 import { IBaseService } from 'aws-cdk-lib/aws-ecs';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
+import stack_config from '../../../electric-snakes-aws.config.json';
+const STACK_NAME = stack_config.STACK_NAME;
 
 /* ---------- Constructs ---------- */
 import { PipelineStack } from './constructs/Pipeline/index';
+
+import { namedPipelineLabel, namedPipelineEnvLabel } from '../construct_labels';
+
 
 interface PipelineProps extends StackProps {
   bucket?: IBucket;
@@ -14,20 +19,23 @@ interface PipelineProps extends StackProps {
   expressAppService?: IBaseService;
 }
 
-export class Chapter6PipelineStack extends Stack {
+export class ThePipelineStack extends Stack {
   constructor(scope: Construct, id: string, props: PipelineProps) {
     super(scope, id, props);
 
     /* ---------- Constructs ---------- */
-    new PipelineStack(this, 'Chapter6-Pipeline-Prod', {
+    const namedPipelineProd_label = namedPipelineEnvLabel('Prod');
+    new PipelineStack(this, namedPipelineProd_label, {
       environment: 'Production',
     });
 
-    new PipelineStack(this, 'Chapter6-Pipeline-Dev', {
+    const namedPipelineDev_label = namedPipelineEnvLabel('Dev');
+    new PipelineStack(this, namedPipelineDev_label, {
       environment: 'Development',
     });
 
+    const namedPipeline_label = namedPipelineLabel();
     /* ---------- Tags ---------- */
-    Tags.of(scope).add('Project', 'Chapter6-Pipeline');
+    Tags.of(scope).add('Project', namedPipeline_label);
   }
-}
+};

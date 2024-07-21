@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "RDS initialization implementation in Node.js",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+  },
   "keywords": [],
   "author": "",
   "license": "MIT",

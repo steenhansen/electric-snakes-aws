@@ -7,9 +7,23 @@ import { RDS } from './constructs/RDS';
 import { S3 } from './constructs/S3';
 import { Route53 } from './constructs/Route53';
 import { ACM } from './constructs/ACM';
-import { DynamoDB } from './constructs/DynamoDB';
 
-export class MultiSnakeStack extends Stack {
+const THE_ENV = process.env.NODE_ENV || '';
+
+import {
+  ecsEnvLabel, route53EnvLabel, acmEnvLabel, myVpcEnvLabel,
+  s3EnvLabel, rdsEnvLabel
+} from '../construct_labels';
+
+const ecsEnv_label = ecsEnvLabel(THE_ENV);
+const route53Env_label = route53EnvLabel(THE_ENV);
+const acmEnv_label = acmEnvLabel(THE_ENV);
+const myVpcEnv_label = myVpcEnvLabel(THE_ENV);
+
+const s3Env_label = s3EnvLabel(THE_ENV);
+const rdsEnv_label = rdsEnvLabel(THE_ENV);
+
+export class TheMainStack extends Stack {
   public readonly acm: ACM;
 
   public readonly ecs: ECS;
@@ -21,23 +35,20 @@ export class MultiSnakeStack extends Stack {
   public readonly s3: S3;
 
   public readonly vpc: Vpc;
-  public readonly dynamodb: DynamoDB;
 
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    this.dynamodb = new DynamoDB(this, `DynamoDb-${process.env.NODE_ENV || ''}`);
+    this.route53 = new Route53(this, route53Env_label);
 
-    this.route53 = new Route53(this, `Route53-${process.env.NODE_ENV || ''}`);
-
-    this.acm = new ACM(this, `ACM-${process.env.NODE_ENV || ''}`, {
+    this.acm = new ACM(this, acmEnv_label, {
       hosted_zone: this.route53.hosted_zone,
     });
 
     const cidr =
       process.env.NODE_ENV === 'Production' ? '10.0.0.0/16' : '10.1.0.0/16';
 
-    this.vpc = new Vpc(this, `MyVPC-${process.env.NODE_ENV || ''}`, {
+    this.vpc = new Vpc(this, myVpcEnv_label, {
       cidr,
       subnetConfiguration: [
         {
@@ -56,23 +67,23 @@ export class MultiSnakeStack extends Stack {
           subnetType: SubnetType.PRIVATE_ISOLATED,
         },
       ],
+      maxAzs: 2,
     });
 
-    this.s3 = new S3(this, `S3-${process.env.NODE_ENV || ''}`, {
+    this.s3 = new S3(this, s3Env_label, {
       acm: this.acm,
       route53: this.route53,
     });
 
-    this.rds = new RDS(this, `RDS-${process.env.NODE_ENV || ''}`, {
+    this.rds = new RDS(this, rdsEnv_label, {
       vpc: this.vpc,
     });
 
-    this.ecs = new ECS(this, `ECS-${process.env.NODE_ENV || ''}`, {
+    this.ecs = new ECS(this, ecsEnv_label, {
       rds: this.rds,
       vpc: this.vpc,
       acm: this.acm,
       route53: this.route53,
-      dynamodb: this.dynamodb,
     });
 
     this.rds.instance.connections.allowFrom(this.ecs.cluster, Port.tcp(3306));

@@ -5,7 +5,10 @@ import {
 import { IHostedZone } from 'aws-cdk-lib/aws-route53';
 import { Construct } from 'constructs';
 
-import { domain_name } from '../../../../../electric-snakes-aws.config.json';
+
+import stack_config from '../../../../../electric-snakes-aws.config.json';
+const DOMAIN_NAME = stack_config.DOMAIN_NAME;
+
 
 interface Props {
   hosted_zone: IHostedZone;
@@ -18,9 +21,9 @@ export class ACM extends Construct {
     super(scope, id);
 
     this.certificate = new Certificate(scope, 'Certificate', {
-      domainName: domain_name,
+      domainName: DOMAIN_NAME,
       validation: CertificateValidation.fromDns(props.hosted_zone),
-      subjectAlternativeNames: [`*.${domain_name}`],
+      subjectAlternativeNames: [`*.${DOMAIN_NAME}`],
     });
   }
 }

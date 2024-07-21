@@ -14,17 +14,40 @@ import { ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { LoadBalancerTarget } from 'aws-cdk-lib/aws-route53-targets';
 import { ACM } from '../ACM';
 import { Route53 } from '../Route53';
-import { DynamoDB } from '../DynamoDB';
 import { RDS } from '../RDS';
 
-import config from '../../../../../electric-snakes-aws.config.json';
+const THE_ENV = process.env.NODE_ENV || '';
+import stack_config from '../../../../../electric-snakes-aws.config.json';
+const INSTANCE_TYPE = stack_config.INSTANCE_TYPE;
+
+import {
+  backEndSubDomainName, namedLoadBalancerEnvLabel, loadBalancerEnvLabel, expressEnvLabel, serviceEnvLabel,
+  ecsEnvLabel, publicListenerEnvLabel, ecsClusterEnvLabel, taskDefinitionEnvLabel, ecsLogGroupEnvLabel, defaultAutoScalingGroupEnvLabel, namedEcsLogsEnvLabel, namedStreamPrefixEnvLabel
+} from '../../../construct_labels';
+
+const backEnd_domainName = backEndSubDomainName(THE_ENV);
+const namedLoadBalancerEnv_label = namedLoadBalancerEnvLabel(THE_ENV);
+const LoadBalancerEnv_label = loadBalancerEnvLabel(THE_ENV);
+const publicListenerEnv_label = publicListenerEnvLabel(THE_ENV);
+const ecsEnv_label = ecsEnvLabel(THE_ENV);
+const expressEnv_label = expressEnvLabel(THE_ENV);
+const serviceEnv_label = serviceEnvLabel(THE_ENV);
+
+const ecsClusterEnv_label = ecsClusterEnvLabel(THE_ENV);
+const taskDefinitionEnv_label = taskDefinitionEnvLabel(THE_ENV);
+
+const defaultAutoScalingGroupEnv_label = defaultAutoScalingGroupEnvLabel(THE_ENV);
+const ecsLogGroupEnv_label = ecsLogGroupEnvLabel(THE_ENV);
+const namedEcsLogsEnv_label = namedEcsLogsEnvLabel(THE_ENV);
+
+const namedStreamPrefixEnv_label = namedStreamPrefixEnvLabel(THE_ENV);
+
 
 interface Props {
   rds: RDS;
   vpc: Vpc;
   acm: ACM;
   route53: Route53;
-  dynamodb: DynamoDB,
 }
 
 export class ECS extends Construct {
@@ -47,9 +70,9 @@ export class ECS extends Construct {
 
     this.log_group = new LogGroup(
       scope,
-      `ECSLogGroup-${process.env.NODE_ENV || ''}`,
+      ecsLogGroupEnv_label,
       {
-        logGroupName: `ecs-logs-multi-snakes-${process.env.NODE_ENV || ''}`,
+        logGroupName: namedEcsLogsEnv_label,
         retention: RetentionDays.ONE_DAY,
         removalPolicy: RemovalPolicy.DESTROY,
       },
@@ -57,34 +80,34 @@ export class ECS extends Construct {
 
     this.cluster = new ecs.Cluster(
       scope,
-      `EcsCluster-${process.env.NODE_ENV || ''}`,
+      ecsClusterEnv_label,
       { vpc: props.vpc },
     );
 
     this.cluster.addCapacity(
-      `DefaultAutoScalingGroup-${process.env.NODE_ENV || ''}`,
+      defaultAutoScalingGroupEnv_label,
       {
-        instanceType: new InstanceType('t2.micro'),
+        instanceType: new InstanceType(INSTANCE_TYPE),
       },
     );
 
     this.task_definition = new ecs.Ec2TaskDefinition(
       scope,
-      `TaskDefinition-${process.env.NODE_ENV || ''}`,
+      taskDefinitionEnv_label,
     );
 
-    this.container = this.task_definition.addContainer(
-      `Express-${process.env.NODE_ENV || ''}`,
+    this.container = this.task_definition.addContainer(expressEnv_label,
       {
         image: ecs.ContainerImage.fromAsset(
           resolve(__dirname, '..', '..', '..', '..', 'server'),
         ),
         environment: {
           NODE_ENV: process.env.NODE_ENV as string,
+          RDS_HOST: props.rds.instance.instanceEndpoint.hostname,
         },
         memoryLimitMiB: 256,
         logging: ecs.LogDriver.awsLogs({
-          streamPrefix: `test-multi-snakes-${process.env.NODE_ENV || ''}`,    ////////////////////////////////////  error make CONSTANT
+          streamPrefix: namedStreamPrefixEnv_label,
           logGroup: this.log_group,
         }),
       },
@@ -97,7 +120,7 @@ export class ECS extends Construct {
 
     this.service = new ecs.Ec2Service(
       scope,
-      `Service-${process.env.NODE_ENV || ''}`,
+      serviceEnv_label,
       {
         cluster: this.cluster,
         taskDefinition: this.task_definition,
@@ -106,16 +129,16 @@ export class ECS extends Construct {
 
     this.load_balancer = new ApplicationLoadBalancer(
       scope,
-      `LB-${process.env.NODE_ENV || ''}`,
+      LoadBalancerEnv_label,
       {
         vpc: props.vpc,
         internetFacing: true,
-        loadBalancerName: `test-multi-snakes-lb-${process.env.NODE_ENV || ''}`,  ////////////////////////////////////  error make CONSTANT
+        loadBalancerName: namedLoadBalancerEnv_label,
       },
     );
 
     this.listener = this.load_balancer.addListener(
-      `PublicListener-${process.env.NODE_ENV || ''}`,
+      publicListenerEnv_label,
       {
         port: 443,
         open: true,
@@ -123,11 +146,11 @@ export class ECS extends Construct {
       },
     );
 
-    this.listener.addTargets(`ECS-${process.env.NODE_ENV || ''}`, {
+    this.listener.addTargets(ecsEnv_label, {
       protocol: ApplicationProtocol.HTTP,
       targets: [
         this.service.loadBalancerTarget({
-          containerName: `Express-${process.env.NODE_ENV || ''}`,
+          containerName: expressEnv_label,
           containerPort: 80,
         }),
       ],
@@ -141,17 +164,12 @@ export class ECS extends Construct {
       },
     });
 
-    const backEndSubDomain =
-      process.env.NODE_ENV === 'Production'
-        ? config.backend_subdomain
-        : config.backend_dev_subdomain;
-
     new ARecord(this, 'BackendAliasRecord', {
       zone: props.route53.hosted_zone,
       target: RecordTarget.fromAlias(
         new LoadBalancerTarget(this.load_balancer),
       ),
-      recordName: `${backEndSubDomain}.${config.domain_name}`,
+      recordName: backEnd_domainName,
     });
 
     new CfnOutput(scope, 'BackendURL', {

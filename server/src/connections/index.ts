@@ -6,7 +6,13 @@ import {
   SecretsManagerClient,
 } from '@aws-sdk/client-secrets-manager';
 
+import stack_config from '../../../../electric-snakes-aws.config.json';
+
+
 dotenv.config();
+
+const STACK_KEBAB = stack_config.STACK_KEBAB;
+const THE_ENV = process.env.NODE_ENV || '';
 
 let pool: Pool;
 
@@ -29,14 +35,10 @@ const getSecretValue = async (secretId: string) => {
 };
 
 export const init = () => {
-  console.log(
-    'SecretId: ',
-    `multi-snakes/rds/my-sql-instance-${process.env.NODE_ENV}`,
-  );
-  getSecretValue(`multi-snakes/rds/my-sql-instance-${process.env.NODE_ENV}`)
+  getSecretValue(`${STACK_KEBAB}/rds/my-sql-instance-${THE_ENV}`)
     .then(({ password, username, host }) => {
       pool = mysql.createPool({
-        host,
+        host: process.env.RDS_HOST || host,
         user: username,
         password,
         multipleStatements: true,

@@ -7,8 +7,13 @@ import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { createHash } from 'crypto';
 
+
+import { idFunctionSecurityGroupLabel, idResInitStackNameLabel, arnLambdaRegionAccountResInitStackNameLabel, idAwsSdkCallVerHashLabel } from '../../../../construct_labels';
+
+
+
 export interface CDKResourceInitializerProps {
-  config: { credentials_secret_name: string };
+  config: { credentials_secret_name: string; };
   function_code: lambda.DockerImageCode;
   function_log_retention: RetentionDays;
   function_security_groups: ec2.ISecurityGroup[];
@@ -32,13 +37,18 @@ export class CDKResourceInitializer extends Construct {
   ) {
     super(scope, id);
 
+
     const stack = Stack.of(this);
+
+    const idFunctionSecurityGroup_label = idFunctionSecurityGroupLabel(id);
+    const idResInitStackName_label = idResInitStackNameLabel(id, stack.stackName);
+    const arnLambdaRegionAccountResInitStackName_label = arnLambdaRegionAccountResInitStackNameLabel(stack);
 
     const function_security_group = new ec2.SecurityGroup(
       scope,
       'Function-SecurityGroup',
       {
-        securityGroupName: `${id}FunctionSecurityGroup`,
+        securityGroupName: idFunctionSecurityGroup_label,
         vpc: props.vpc,
         allowAllOutbound: true,
       },
@@ -47,7 +57,7 @@ export class CDKResourceInitializer extends Construct {
     this.function = new lambda.DockerImageFunction(scope, 'Function', {
       allowAllOutbound: true,
       code: props.function_code,
-      functionName: `${id}-ResInit${stack.stackName}`,
+      functionName: idResInitStackName_label,
       logRetention: props.function_log_retention,
       memorySize: props.function_memory_size || 128,
       securityGroups: [
@@ -70,6 +80,8 @@ export class CDKResourceInitializer extends Construct {
       .digest('hex')
       .substring(0, 6);
 
+    const idAwsSdkCallVerHash_label = idAwsSdkCallVerHashLabel(id, this.function.currentVersion.version, payloadHashPrefix);
+
     const sdkCall: custom.AwsSdkCall = {
       service: 'Lambda',
       action: 'invoke',
@@ -77,11 +89,7 @@ export class CDKResourceInitializer extends Construct {
         FunctionName: this.function.functionName,
         Payload: payload,
       },
-      physicalResourceId: custom.PhysicalResourceId.of(
-        `${id}-AwsSdkCall-${
-          this.function.currentVersion.version + payloadHashPrefix
-        }`,
-      ),
+      physicalResourceId: custom.PhysicalResourceId.of(idAwsSdkCallVerHash_label),
     };
 
     const customResourceFnRole = new Role(scope, 'AwsCustomResourceRole', {
@@ -90,9 +98,7 @@ export class CDKResourceInitializer extends Construct {
 
     customResourceFnRole.addToPolicy(
       new PolicyStatement({
-        resources: [
-          `arn:aws:lambda:${stack.region}:${stack.account}:function:*-ResInit${stack.stackName}`,
-        ],
+        resources: [arnLambdaRegionAccountResInitStackName_label],
         actions: ['lambda:InvokeFunction'],
       }),
     );

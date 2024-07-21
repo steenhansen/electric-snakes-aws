@@ -1,7 +1,8 @@
 import { HostedZone, IHostedZone } from 'aws-cdk-lib/aws-route53';
 import { Construct } from 'constructs';
 
-import config from '../../../../../electric-snakes-aws.config.json';
+import stack_config from '../../../../../electric-snakes-aws.config.json';
+const DOMAIN_NAME = stack_config.DOMAIN_NAME;
 
 export class Route53 extends Construct {
   public readonly hosted_zone: IHostedZone;
@@ -10,7 +11,7 @@ export class Route53 extends Construct {
     super(scope, id);
 
     this.hosted_zone = HostedZone.fromLookup(scope, 'HostedZone', {
-      domainName: config.domain_name,
+      domainName: DOMAIN_NAME,
     });
   }
 }

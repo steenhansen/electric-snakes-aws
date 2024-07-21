@@ -1,3 +1,33 @@
+
+
+
+
+
+
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html
+"You can use Amazon EC2 to launch as many or as few virtual servers as you need"
+
+ Amazon EC2 number of servers
+
+
+
+
+
+
+https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html
+
+
+
+https://aws.amazon.com/caching/session-m
+https://docs.aws.amazon.com/elasticloadbalancing/latest/application/sticky-sessions.html
+
+
+
+
+AWS-CDK-in-Action-Chapter-5
+
+
 # Welcome to your CDK TypeScript project
 
 This is a blank project for CDK development with TypeScript.
@@ -12,19 +42,3 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `cdk deploy`      deploy this stack to your default AWS account/region
 * `cdk diff`        compare deployed stack with current state
 * `cdk synth`       emits the synthesized CloudFormation template
-
-// to deploy on aws
-$  cd infrastructure
-$  yarn run cdk:pipeline deploy --profile steen-admin-2
-
-//  to remove from aws
-$  cdk destroy --profile steen-admin-2
-
-
-
-
-NO $ yarn cdk bootstrap --profile steen-admin-2
-
-NO $ yarn cdk synth
-
-$ yarn cdk deploy --profile steen-admin-2

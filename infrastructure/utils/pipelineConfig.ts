@@ -1,42 +1,36 @@
+import * as dotenv from 'dotenv';
 
-import {
-  github_token, slack_prod_channel_id, slack_dev_channel_id, slack_workspace_id, prod_branch,
-  dev_branch, prod_pipeline_tag, dev_pipeline_tag,
-  domain_name, backend_subdomain, frontend_subdomain, backend_dev_subdomain, frontend_dev_subdomain
-} from '../../../electric-snakes-aws.config.json';
+import stack_config from '../../../electric-snakes-aws.config.json';
+const GITHUB_TOKEN = stack_config.GITHUB_TOKEN;
+const SLACK_PROD_CHANNEL_ID = stack_config.SLACK_PROD_CHANNEL_ID;
+const SLACK_DEV_CHANNEL_ID = stack_config.SLACK_DEV_CHANNEL_ID;
+const SLACK_WORKSPACE_ID = stack_config.SLACK_WORKSPACE_ID;
 
-
-const webConfigJSON = {
-  domainName: domain_name,
-  backendSubdomain: backend_subdomain,
-  frontendSubdomain: frontend_subdomain,
-  backendDevSubdomain: backend_dev_subdomain,
-  frontendDevSubdomain: frontend_dev_subdomain,
-};
+import { namedDevelopmentPipelineLabel, namedProductionPipelineLabel } from '../construct_labels';
+const namedDevelopmentPipeline_label = namedDevelopmentPipelineLabel();
+const namedProductionPipeline_label = namedProductionPipelineLabel();
 
 export const pipelineConfig = (env: string) => {
   if (env === 'Production') {
 
     return {
       buildCommand: 'yarn build:prod',
-      deployCommand: 'yarn cdk:prod deploy',
-      branch: prod_branch,
-      tag: prod_pipeline_tag,
-      githubToken: github_token,
-      workspaceId: slack_workspace_id,
-      channelId: slack_prod_channel_id,
-      ...webConfigJSON,
+      deployCommand: 'yarn cdk deploy',
+      branch: 'main',
+      tag: namedProductionPipeline_label,
+      githubToken: GITHUB_TOKEN,
+      workspaceId: SLACK_WORKSPACE_ID,
+      channelId: SLACK_PROD_CHANNEL_ID,
     };
   }
 
   return {
     buildCommand: 'yarn build:dev',
     deployCommand: 'yarn cdk:dev deploy',
-    branch: dev_branch,
-    tag: dev_pipeline_tag,
-    githubToken: github_token,
-    workspaceId: slack_workspace_id,
-    channelId: slack_dev_channel_id,
-    ...webConfigJSON,
+    branch: 'dev',
+    tag: namedDevelopmentPipeline_label,
+    githubToken: GITHUB_TOKEN,
+    workspaceId: SLACK_WORKSPACE_ID,
+    channelId: SLACK_DEV_CHANNEL_ID,
   };
 };
