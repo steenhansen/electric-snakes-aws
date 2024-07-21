@@ -6,7 +6,7 @@ import { IHostedZone } from 'aws-cdk-lib/aws-route53';
 import { Construct } from 'constructs';
 
 
-import stack_config from '../../../../../electric-snakes-aws.config.json';
+import stack_config from '../../../config.json';
 const DOMAIN_NAME = stack_config.DOMAIN_NAME;
 
 

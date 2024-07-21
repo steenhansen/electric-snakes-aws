@@ -8,7 +8,6 @@ import { Todo } from '../Todo';
 
 import { MainContainer } from './styles';
 
-//import config from '@web/outside-config/config.json';
 import config from '../../config.json';
 
 /* ----------

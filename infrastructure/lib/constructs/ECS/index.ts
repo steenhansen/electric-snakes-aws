@@ -17,7 +17,7 @@ import { Route53 } from '../Route53';
 import { RDS } from '../RDS';
 
 const THE_ENV = process.env.NODE_ENV || '';
-import stack_config from '../../../../../electric-snakes-aws.config.json';
+import stack_config from '../../../config.json';
 const INSTANCE_TYPE = stack_config.INSTANCE_TYPE;
 
 import {

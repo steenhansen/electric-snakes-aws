@@ -1,7 +1,7 @@
 
 import { Stack } from 'aws-cdk-lib';
 
-import stack_config from '../../electric-snakes-aws.config.json';
+import stack_config from './config.json';
 const STACK_NAME = stack_config.STACK_NAME;
 const UNIQUE_S3_ID = stack_config.UNIQUE_S3_ID;
 

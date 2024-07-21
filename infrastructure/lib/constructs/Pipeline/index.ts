@@ -18,7 +18,7 @@ import { Topic } from 'aws-cdk-lib/aws-sns';
 import { SlackChannelConfiguration } from 'aws-cdk-lib/aws-chatbot';
 import { NotificationRule } from 'aws-cdk-lib/aws-codestarnotifications';
 import { pipelineConfig } from '../../../utils/pipelineConfig';
-import stack_config from '../../../../../electric-snakes-aws.config.json';
+import stack_config from '../../../config.json';
 const LINUX_IMAGE = stack_config.LINUX_IMAGE;
 
 import { namedBackEndTestPipelineProjectEnvLabel, namedFrontEndTestPipelineProjectEnvLabel, backEndTestPipelineEnvLabel, namedPipelineEnvLabel, envPipelineSlackNotTopicLabel, envPipelineSlackChannelConfLabel, namedBackEndBuildPipelineProjectEnvLabel } from '../../../construct_labels';

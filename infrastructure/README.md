@@ -8,6 +8,8 @@ STEPS:
 	cd infrastructure
 		yarn
 
+yarn configurate   // to copy master configs
+
     yarn cdk bootstrap --profile steen-admin-2 
 
 		yarn cdk:pipeline synth --profile steen-admin-2 > ../../el_snakes_cloud_formation.yaml

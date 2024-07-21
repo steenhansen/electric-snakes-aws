@@ -18,7 +18,7 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 import { namedBackEndBuildPipelineProjectEnvLabel, namedFrontEndTestPipelineProjectEnvLabel, namedBackEndTestPipelineProjectEnvLabel, namedBackEndTestEnvLabel, namedDevelopmentPipelineLabel, backEndTestPipelineEnvLabel } from '../../../../../construct_labels';
 
-import stack_config from '../../../../../../../electric-snakes-aws.config.json';
+import stack_config from '../../../../../config.json';
 const GITHUB_REPO = stack_config.GITHUB_REPO;
 const GITHUB_OWNER = stack_config.GITHUB_OWNER;
 const LINUX_IMAGE = stack_config.LINUX_IMAGE;
