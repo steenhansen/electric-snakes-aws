@@ -162,7 +162,6 @@ export class ProductionPipeline extends Construct {
     // adding the necessary permissions in order to synthesize and deploy the cdk code.
     this.deployProject.addToRolePolicy(codeBuildPolicy);
 
-    console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
     this.frontEndTestProject = new PipelineProject(
       scope,
       namedFrontEndTestPipelineProjectEnv_label,

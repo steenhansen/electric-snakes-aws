@@ -4,8 +4,6 @@ import { IRepository } from 'aws-cdk-lib/aws-ecr';
 import { IBaseService } from 'aws-cdk-lib/aws-ecs';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import stack_config from '../../../electric-snakes-aws.config.json';
-const STACK_NAME = stack_config.STACK_NAME;
 
 /* ---------- Constructs ---------- */
 import { PipelineStack } from './constructs/Pipeline/index';

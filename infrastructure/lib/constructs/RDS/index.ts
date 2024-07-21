@@ -6,7 +6,6 @@ import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { DockerImageCode } from 'aws-cdk-lib/aws-lambda';
 
 import { CDKResourceInitializer } from './custom';
-import stack_config from '../../../../../electric-snakes-aws.config.json';
 const THE_ENV = process.env.NODE_ENV || '';
 import {
   namedMysqlRdsInstanceLabel, mysqlInstanceIdEnvLabel, mysqlCredentialsEnvLabel, mysqlRdsInstanceEnvLabel,

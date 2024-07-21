@@ -8,7 +8,6 @@ import { TheMainStack } from '../lib/the_main_stack';
 import { ThePipelineStack } from '../lib/the_pipeline_stack';
 
 config({ path: '.env.production' });
-import stack_config from '../../../electric-snakes-aws.config.json';
 
 const THE_ENV = process.env.NODE_ENV || '';
 const THE_MODE = process.env.CDK_MODE || '';

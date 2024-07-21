@@ -15,8 +15,6 @@ import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import { Route53 } from '../Route53';
 import { ACM } from '../ACM';
 
-import config from '../../../../config.json';
-import stack_config from '../../../../../electric-snakes-aws.config.json';
 const THE_ENV = process.env.NODE_ENV || '';
 import {
   namedWebBucketEnvLabel, frontEndDomainName, frontEndAliasRecordEnvLabel, frontEndUrlEnvLabel,
