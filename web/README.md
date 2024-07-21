@@ -1,6 +1,12 @@
 yarn
 
+yarn configurate   // to copy master configs
+
 yarn start
+
+
+
+
 
 
 # Getting Started with Create React App

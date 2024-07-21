@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@web/outside-config": "file:./../",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -21,10 +20,11 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "gulp && react-scripts start",
-    "build:prod": "gulp && cross-env REACT_APP_ENV=Production react-scripts build",
-    "build:dev": "gulp && cross-env REACT_APP_ENV=Development react-scripts build",
-    "test": "gulp && react-scripts test --watchAll=false",
+    "configurate": "gulp",
+    "start": "react-scripts start",
+    "build:prod": "cross-env REACT_APP_ENV=Production react-scripts build",
+    "build:dev": "cross-env REACT_APP_ENV=Development react-scripts build",
+    "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
