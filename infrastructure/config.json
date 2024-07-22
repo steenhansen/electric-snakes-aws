@@ -6,7 +6,7 @@
   "FRONTEND_DEV_SUBDOMAIN": "dev-frontend-steen-hansen",
   "GITHUB_OWNER": "steenhansen",
   "GITHUB_REPO": "electric-snakes-aws",
-  "UNIQUE_S3_ID": "ElSn_akemxdjqkl",
+  "UNIQUE_S3_ID": "elsn-zxcmxdjhjk",
   "STACK_NAME": "ElSn",
   "LINUX_IMAGE": "aws/codebuild/amazonlinux2-x86_64-standard:4.0",
   "INSTANCE_TYPE": "t2.micro",
