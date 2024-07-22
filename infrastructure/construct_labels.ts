@@ -14,7 +14,7 @@ const BACKEND_SUBDOMAIN = stack_config.BACKEND_SUBDOMAIN;
 const BACKEND_DEV_SUBDOMAIN = stack_config.BACKEND_DEV_SUBDOMAIN;
 
 
-
+const DYNAMO_TABLE = stack_config.DYNAMO_TABLE;
 
 
 export function namedBackEndTestPipelineProjectEnvLabel(the_env: string) {
@@ -81,6 +81,20 @@ export function namedPipelineLabel() {
 
 
 
+export function dynamoNameEnvLabel(the_env: string) {
+  const dynamoNameEnv_label = `Dynamo-Table-${the_env}`;
+  return dynamoNameEnv_label;
+}
+
+export function dynamoTableEnvLabel(the_env: string) {
+  const lower_env = the_env.toLowerCase();
+  const dynamoTableEnv_label = `${DYNAMO_TABLE}-${lower_env}}`;
+  return dynamoTableEnv_label;
+}
+
+
+
+
 
 
 
@@ -133,6 +147,7 @@ export function namedWebBucketEnvLabel(the_env: string) {
   const namedWebBucketEnv_label = `${lower_stack_name}-web-bucket-${UNIQUE_S3_ID}-${lower_env}`;
   return namedWebBucketEnv_label;
 }
+
 ///////////////
 
 export function envPipelineSlackNotTopicLabel(props_env: string) {

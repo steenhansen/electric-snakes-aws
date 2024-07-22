@@ -60,7 +60,7 @@ if (['ONLY_PIPELINE'].includes(THE_MODE)) {
     const secret_string: any = aws_secret.SecretString;
     const split_secret: any = secret_string.split('"');
     const github_token = split_secret[3];
-    process.env.stack_githubToken = github_token;    /// q-bert
+    process.env.stack_githubToken = github_token;
     new ThePipelineStack(app, namedPipelineStack_label, {
       env: {
         region: process.env.CDK_DEFAULT_REGION,

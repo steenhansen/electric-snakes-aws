@@ -1,9 +1,23 @@
 const mysql = require('mysql');
-const AWS = require('aws-sdk');
+
+
+//  https://aws.amazon.com/blogs/compute/node-js-18-x-runtime-now-available-in-aws-lambda/
+
+//  ERROR The runtime parameter of nodejs14.x is no longer supported for creating or updating AWS Lambda functions
+// XXX const AWS = require('aws-sdk');
+
+
+// q-bert
+
+import {
+  SecretsManager
+} from "@aws-sdk/client-secrets-manager";
+
 const fs = require('fs');
 const path = require('path');
 
-const secrets = new AWS.SecretsManager({});
+// XXX const secrets = new AWS.SecretsManager({});
+const secrets = new SecretsManager({});
 
 function query(connection, sql) {
   return new Promise((resolve, reject) => {

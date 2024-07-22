@@ -19,7 +19,7 @@ export const pipelineConfig = (env: string) => {
       deployCommand: 'yarn cdk deploy',
       branch: 'main',
       tag: namedProductionPipeline_label,
-      githubToken: process.env.stack_githubToken,      /// q-bert
+      githubToken: process.env.stack_githubToken,
       workspaceId: SLACK_WORKSPACE_ID,
       channelId: SLACK_PROD_CHANNEL_ID,
     };
@@ -30,7 +30,7 @@ export const pipelineConfig = (env: string) => {
     deployCommand: 'yarn cdk:dev deploy',
     branch: 'dev',
     tag: namedDevelopmentPipeline_label,
-    githubToken: process.env.stack_githubToken,        /// q-bert
+    githubToken: process.env.stack_githubToken,
     workspaceId: SLACK_WORKSPACE_ID,
     channelId: SLACK_DEV_CHANNEL_ID,
   };

@@ -6,6 +6,11 @@ import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { DockerImageCode } from 'aws-cdk-lib/aws-lambda';
 
 import { CDKResourceInitializer } from './custom';
+
+import stack_config from '../../../config.json';
+const MY_SQL_DBNAME = stack_config.MY_SQL_DBNAME;
+
+
 const THE_ENV = process.env.NODE_ENV || '';
 import {
   namedMysqlRdsInstanceLabel, mysqlInstanceIdEnvLabel, mysqlCredentialsEnvLabel, mysqlRdsInstanceEnvLabel,
@@ -47,7 +52,7 @@ export class RDS extends Construct {
       scope, mysqlRdsInstanceEnv_label,
       {
         credentials: rds.Credentials.fromSecret(this.credentials),
-        databaseName: 'todolist',
+        databaseName: MY_SQL_DBNAME,                                //'todolist',
         engine: rds.DatabaseInstanceEngine.mysql({
           version: rds.MysqlEngineVersion.VER_8_0_28,
         }),

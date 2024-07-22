@@ -14,5 +14,7 @@
   "SLACK_DEV_CHANNEL_ID": "C07C2BYJE4W",
   "SLACK_WORKSPACE_ID": "T07BA5K4ZAB",
   "SECRET_NAME": "github-token",
-  "SECRET_REGION": "us-west-2"
+  "SECRET_REGION": "us-west-2",
+  "MY_SQL_DBNAME": "todolist",
+  "DYNAMO_TABLE": "dotolist"
 }
