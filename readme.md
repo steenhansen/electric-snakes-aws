@@ -1,4 +1,16 @@
 
+
+ databaseName: 'todolist',
+ 
+         websiteIndexDocument: 'index.html',
+        websiteErrorDocument: 'index.html',
+		
+		
+  region: "us-west-2",
+  const secret_name = "github-token";
+
+
+
 Users/16043/.aws/config
 Users/16043/.aws/credentials
 

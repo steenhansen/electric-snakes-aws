@@ -1,3 +1,5 @@
+import console = require('console');
+
 /* ---------- External Libraries ---------- */
 import { SecretValue, Tags } from 'aws-cdk-lib';
 import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
@@ -32,6 +34,7 @@ interface Props {
   environment: string;
 }
 
+
 export class PipelineStack extends Construct {
   readonly frontEndTestProject: PipelineProject;
 
@@ -44,18 +47,15 @@ export class PipelineStack extends Construct {
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id);
 
-
-    const {
+    let {
       buildCommand,
       deployCommand,
       branch,
       tag,
-      githubToken,
+      githubToken,   /// /// q-bert
       workspaceId,
       channelId,
     } = pipelineConfig(props.environment);
-
-
 
     const namedBackEndBuildPipelineProjectEnv_label = namedBackEndBuildPipelineProjectEnvLabel(props.environment);
 
@@ -67,7 +67,7 @@ export class PipelineStack extends Construct {
 
     const namedPipelineEnv_label = namedPipelineEnvLabel(props.environment);
     /* ---------- Pipeline Configs ---------- */
-    const secretToken = new SecretValue(githubToken);
+    const secretToken = new SecretValue(githubToken);  /// q-bert
 
     const codeBuildPolicy = new PolicyStatement({
       sid: 'AssumeRole',
@@ -210,7 +210,7 @@ export class PipelineStack extends Construct {
 
 
     /* ---------- Stages ---------- */
-
+    //     https://docs.aws.amazon.com/cdk/api/v2/python/aws_cdk.aws_codepipeline_actions/GitHubSourceAction.html   q-bert
     this.pipeline.addStage({
       stageName: 'Source',
       actions: [
@@ -219,7 +219,7 @@ export class PipelineStack extends Construct {
           owner: GITHUB_OWNER,
           repo: GITHUB_REPO,
           branch: `${branch}`,
-          oauthToken: secretToken,
+          oauthToken: secretToken,      /// q-bert   SecretValue.secrets_manager("my-github-token"),
           output: outputSource,
           trigger: GitHubTrigger.WEBHOOK,
         }),

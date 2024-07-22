@@ -18,6 +18,41 @@ yarn configurate   // to copy master configs
 
 
 
+////////////////////////////////////
+
+
+https://medium.com/@marius.ingjer/get-your-github-personal-access-tokens-out-of-aws-ac9314bf5379
+
+https://us-west-2.console.aws.amazon.com/codesuite/settings/connections
+
+https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html
+
+const pipeline = new pipelines.CodePipeline(this, 'Pipeline', {
+  synth: new pipelines.ShellStep('Synth', {
+  // Use a connection created using the AWS console to authenticate to GitHub
+  // Other sources are available.
+  input: pipelines.CodePipelineSource.connection('steenhansen/electric-snakes-aws', 'main', {
+    connectionArn: 'arn:aws:codeconnections:us-west-2:211125473900:connection/604e293b-fd47-4513-809d-7cc162b55b9e',
+  }),
+  commands: [
+      'npm ci',
+      'npm run build',
+      'npx cdk synth',
+    ],
+  }),
+});
+
+
+
+/////////////////////////
+
+
+
+
+
+
+
+
 # Welcome to your CDK TypeScript project
 
 This is a blank project for CDK development with TypeScript.

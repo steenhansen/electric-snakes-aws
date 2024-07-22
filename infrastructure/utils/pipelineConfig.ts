@@ -1,7 +1,7 @@
-import * as dotenv from 'dotenv';
+import console = require('console');
 
-import stack_config from '../../../electric-snakes-aws.config.json';
-const GITHUB_TOKEN = stack_config.GITHUB_TOKEN;
+
+import stack_config from '../config.json';
 const SLACK_PROD_CHANNEL_ID = stack_config.SLACK_PROD_CHANNEL_ID;
 const SLACK_DEV_CHANNEL_ID = stack_config.SLACK_DEV_CHANNEL_ID;
 const SLACK_WORKSPACE_ID = stack_config.SLACK_WORKSPACE_ID;
@@ -9,6 +9,7 @@ const SLACK_WORKSPACE_ID = stack_config.SLACK_WORKSPACE_ID;
 import { namedDevelopmentPipelineLabel, namedProductionPipelineLabel } from '../construct_labels';
 const namedDevelopmentPipeline_label = namedDevelopmentPipelineLabel();
 const namedProductionPipeline_label = namedProductionPipelineLabel();
+
 
 export const pipelineConfig = (env: string) => {
   if (env === 'Production') {
@@ -18,7 +19,7 @@ export const pipelineConfig = (env: string) => {
       deployCommand: 'yarn cdk deploy',
       branch: 'main',
       tag: namedProductionPipeline_label,
-      githubToken: GITHUB_TOKEN,
+      githubToken: process.env.stack_githubToken,      /// q-bert
       workspaceId: SLACK_WORKSPACE_ID,
       channelId: SLACK_PROD_CHANNEL_ID,
     };
@@ -29,7 +30,7 @@ export const pipelineConfig = (env: string) => {
     deployCommand: 'yarn cdk:dev deploy',
     branch: 'dev',
     tag: namedDevelopmentPipeline_label,
-    githubToken: GITHUB_TOKEN,
+    githubToken: process.env.stack_githubToken,        /// q-bert
     workspaceId: SLACK_WORKSPACE_ID,
     channelId: SLACK_DEV_CHANNEL_ID,
   };
