@@ -128,11 +128,11 @@ export function namedLoadBalancerEnvLabel(the_env: string) {
 
 
 export function namedWebBucketEnvLabel(the_env: string) {
+  const lower_stack_name = STACK_NAME.toLocaleLowerCase();
   const lower_env = the_env.toLocaleLowerCase();
-  const namedWebBucketEnv_label = `${STACK_NAME}-web-bucket-${UNIQUE_S3_ID}-${lower_env}`;
+  const namedWebBucketEnv_label = `${lower_stack_name}-web-bucket-${UNIQUE_S3_ID}-${lower_env}`;
   return namedWebBucketEnv_label;
 }
-
 ///////////////
 
 export function envPipelineSlackNotTopicLabel(props_env: string) {
