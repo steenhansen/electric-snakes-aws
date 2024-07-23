@@ -58,8 +58,8 @@ export class RDS extends Construct {
         }),
         instanceIdentifier: mysqlRdsInstanceIdEnv_label,
         instanceType: ec2.InstanceType.of(
-          ec2.InstanceClass.T2,
-          ec2.InstanceSize.SMALL,
+          ec2.InstanceClass.T3,     // T2 not work
+          ec2.InstanceSize.MICRO,   // was SMALL          db.t3.micro is on Free tier
         ),
         port: 3306,
         publiclyAccessible: false,
