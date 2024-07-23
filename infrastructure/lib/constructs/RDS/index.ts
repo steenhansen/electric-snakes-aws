@@ -9,6 +9,8 @@ import { CDKResourceInitializer } from './custom';
 
 import stack_config from '../../../config.json';
 const MY_SQL_DBNAME = stack_config.MY_SQL_DBNAME;
+const MY_SQL_CLASS = stack_config.MY_SQL_CLASS;
+const MY_SQL_SIZE = stack_config.MY_SQL_SIZE;
 
 
 const THE_ENV = process.env.NODE_ENV || '';
@@ -48,6 +50,14 @@ export class RDS extends Construct {
       },
     );
 
+    //  aws rds describe-db-engine-versions --engine mysql --query "*[].{Engine:Engine,EngineVersion:EngineVersion}" --output text
+
+    type instance_class_type = keyof typeof ec2.InstanceClass;
+    let mysql_class_key: instance_class_type = MY_SQL_CLASS as instance_class_type;
+
+    type instance_size_type = keyof typeof ec2.InstanceSize;
+    let mysql_size_key: instance_size_type = MY_SQL_SIZE as instance_size_type;
+
     this.instance = new rds.DatabaseInstance(
       scope, mysqlRdsInstanceEnv_label,
       {
@@ -57,9 +67,10 @@ export class RDS extends Construct {
           version: rds.MysqlEngineVersion.VER_8_0_36,
         }),
         instanceIdentifier: mysqlRdsInstanceIdEnv_label,
+
         instanceType: ec2.InstanceType.of(
-          ec2.InstanceClass.T3,     // T2 not work
-          ec2.InstanceSize.MICRO,   // was SMALL          db.t3.micro is on Free tier
+          ec2.InstanceClass[mysql_class_key],  // now T3,     T2 did not work
+          ec2.InstanceSize[mysql_size_key],    // now MICRO,  SMALL did not work
         ),
         port: 3306,
         publiclyAccessible: false,
