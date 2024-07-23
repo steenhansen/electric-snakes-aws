@@ -95,7 +95,7 @@ export class RDS extends Construct {
         function_security_groups: [],
         vpc: props.vpc,
         subnets_selection: props.vpc.selectSubnets({
-          subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
+          subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,  // q-bert-deprecated
         }),
       },
     );

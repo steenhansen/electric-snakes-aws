@@ -5,15 +5,16 @@ import { Construct } from 'constructs';
 import { DynamoDBSeeder, Seeds } from '@cloudcomponents/cdk-dynamodb-seeder';
 import { v4 as uuidv4 } from 'uuid';
 
-import stack_config from '../../../config.json';
+
 
 
 import {
-  dynamoNameEnvLabel, dynamoTableEnvLabel
+  dynamoNameEnvLabel, dynamoTableEnvLabel, dynamoInlineSeederEnvLabel
 } from '../../../construct_labels';
 const THE_ENV = process.env.NODE_ENV || '';
 const dynamoNameEnv_label = dynamoNameEnvLabel(THE_ENV);
-const dynamoTableEnv_label = dynamoNameEnvLabel(THE_ENV);
+const dynamoTableEnv_label = dynamoTableEnvLabel(THE_ENV);
+const dynamoInlineSeederEnv_label = dynamoInlineSeederEnvLabel(THE_ENV);
 
 export class DynamoDB extends Construct {
   readonly table: Table;
@@ -32,7 +33,8 @@ export class DynamoDB extends Construct {
 
     new DynamoDBSeeder(
       this,
-      `Dynamo-InlineSeeder-${process.env.NODE_ENV || ''}`,
+      dynamoInlineSeederEnv_label,
+      //  `Dynamo-InlineSeeder-${process.env.NODE_ENV || ''}`,
       {
         table: this.table,
         seeds: Seeds.fromInline([

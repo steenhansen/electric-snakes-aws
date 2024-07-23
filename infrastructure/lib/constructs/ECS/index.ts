@@ -16,6 +16,8 @@ import { ACM } from '../ACM';
 import { Route53 } from '../Route53';
 import { RDS } from '../RDS';
 
+//import { DynamoDB } from '../DynamoDB';
+
 const THE_ENV = process.env.NODE_ENV || '';
 import stack_config from '../../../config.json';
 const INSTANCE_TYPE = stack_config.INSTANCE_TYPE;
@@ -45,6 +47,7 @@ const namedStreamPrefixEnv_label = namedStreamPrefixEnvLabel(THE_ENV);
 
 interface Props {
   rds: RDS;
+  //dynamoDB: DynamoDB;
   vpc: Vpc;
   acm: ACM;
   route53: Route53;
@@ -171,6 +174,9 @@ export class ECS extends Construct {
       ),
       recordName: backEnd_domainName,
     });
+
+    //   props.dynamoDB.main_table.grantReadWriteData(this.task_definition.taskRole);
+
 
     new CfnOutput(scope, 'BackendURL', {
       value: this.load_balancer.loadBalancerDnsName,

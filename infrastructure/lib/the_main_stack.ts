@@ -8,6 +8,8 @@ import { S3 } from './constructs/S3';
 import { Route53 } from './constructs/Route53';
 import { ACM } from './constructs/ACM';
 
+import { DynamoDB } from './constructs/DynamoDB';
+
 const THE_ENV = process.env.NODE_ENV || '';
 
 import {
@@ -24,6 +26,8 @@ const s3Env_label = s3EnvLabel(THE_ENV);
 const rdsEnv_label = rdsEnvLabel(THE_ENV);
 
 export class TheMainStack extends Stack {
+  //public readonly dynamoDB: DynamoDB;
+
   public readonly acm: ACM;
 
   public readonly ecs: ECS;
@@ -38,6 +42,8 @@ export class TheMainStack extends Stack {
 
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
+
+    //this.dynamoDB = new Dynamodb(this, 'Dynamodb');
 
     this.route53 = new Route53(this, route53Env_label);
 
@@ -59,7 +65,7 @@ export class TheMainStack extends Stack {
         {
           cidrMask: 24,
           name: 'compute',
-          subnetType: SubnetType.PRIVATE_WITH_NAT,
+          subnetType: SubnetType.PRIVATE_WITH_NAT, // q-bert-deprecated
         },
         {
           cidrMask: 28,
@@ -80,6 +86,7 @@ export class TheMainStack extends Stack {
     });
 
     this.ecs = new ECS(this, ecsEnv_label, {
+      // dynamoDB: this.dynamoDB,
       rds: this.rds,
       vpc: this.vpc,
       acm: this.acm,

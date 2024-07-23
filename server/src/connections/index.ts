@@ -34,8 +34,15 @@ const getSecretValue = async (secretId: string) => {
   return JSON.parse(SecretString);
 };
 
+export function namedRdsMysqlPassUserHostEnvLabel(the_env: string) {
+  const namedRdsMysqlPassUserHostEnv_label = `${STACK_NAME}/rds/my-sql-instance-${the_env}`;
+  return namedRdsMysqlPassUserHostEnv_label;
+}
+
+const namedRdsMysqlPassUserHostEnv_label = namedRdsMysqlPassUserHostEnvLabel(THE_ENV);
 export const init = () => {
-  getSecretValue(`${STACK_NAME}/rds/my-sql-instance-${THE_ENV}`)
+  //  getSecretValue(`${STACK_NAME}/rds/my-sql-instance-${THE_ENV}`);  // q-bert
+  getSecretValue(namedRdsMysqlPassUserHostEnv_label)  // q-bert
     .then(({ password, username, host }) => {
       pool = mysql.createPool({
         host: process.env.RDS_HOST || host,

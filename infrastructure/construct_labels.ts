@@ -93,7 +93,10 @@ export function dynamoTableEnvLabel(the_env: string) {
 }
 
 
-
+export function dynamoInlineSeederEnvLabel(the_env: string) {
+  const dynamoInlineSeederEnv_label = `Dynamo-InlineSeeder-${the_env}`;
+  return dynamoInlineSeederEnv_label;
+}
 
 
 

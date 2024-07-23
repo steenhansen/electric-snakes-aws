@@ -16,5 +16,7 @@
   "SECRET_NAME": "github-token",
   "SECRET_REGION": "us-west-2",
   "MY_SQL_DBNAME": "todolist",
+  "MY_SQL_CLASS": "T3",
+  "MY_SQL_SIZE": "MICRO",
   "DYNAMO_TABLE": "dotolist"
 }
