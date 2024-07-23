@@ -7,7 +7,7 @@ import {
 } from '@aws-sdk/client-secrets-manager';
 
 import stack_config from '../config.json';
-
+const SECRET_REGION = stack_config.SECRET_REGION;
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ const THE_ENV = process.env.NODE_ENV || '';
 let pool: Pool;
 
 const secrets = new SecretsManagerClient({
-  region: 'us-east-1',
+  region: SECRET_REGION,
 });
 
 const getSecretValue = async (secretId: string) => {

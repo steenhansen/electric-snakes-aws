@@ -4,12 +4,13 @@
 var fs = require('fs');
 var gulp = require('gulp');
 
-const { STACK_NAME, DOMAIN_NAME, BACKEND_SUBDOMAIN, BACKEND_DEV_SUBDOMAIN } = require('../../electric-snakes-aws.config.json');
+const { STACK_NAME, DOMAIN_NAME, BACKEND_SUBDOMAIN, BACKEND_DEV_SUBDOMAIN, SECRET_REGION } = require('../electric-snakes-aws.config.json');
 
 const the_json = {
   "domain_name": DOMAIN_NAME,
   "backend_subdomain": BACKEND_SUBDOMAIN,
   "backend_dev_subdomain": BACKEND_DEV_SUBDOMAIN,
+  "SECRET_REGION": SECRET_REGION,
   "STACK_NAME": STACK_NAME
 };
 
