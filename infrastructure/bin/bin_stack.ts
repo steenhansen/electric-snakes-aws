@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
+import console = require('console');
+
 import stack_config from '../config.json';
 
 const SECRET_NAME = stack_config.SECRET_NAME;
 const SECRET_REGION = stack_config.SECRET_REGION;
+const AWS_ACCOUNT = stack_config.AWS_ACCOUNT;
 
 import {
   SecretsManagerClient,
@@ -16,12 +19,12 @@ const client = new SecretsManagerClient({
 
 
 import * as cdk from 'aws-cdk-lib';
-import { config } from 'dotenv';
+//import { config } from 'dotenv';
 
 import { TheMainStack } from '../lib/the_main_stack';
 import { ThePipelineStack } from '../lib/the_pipeline_stack';
 
-config({ path: '.env.production' });
+//config({ path: '.env.production' });
 
 const THE_ENV = process.env.NODE_ENV || '';
 const THE_MODE = process.env.CDK_MODE || '';
@@ -35,8 +38,8 @@ const namedPipelineStack_label = namedPipelineStackLabel();
 if (['ONLY_DEV'].includes(THE_MODE)) {
   new TheMainStack(app, stack_label, {
     env: {
-      region: process.env.CDK_DEFAULT_REGION,
-      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: SECRET_REGION,
+      account: AWS_ACCOUNT,
     },
   });
 }
@@ -44,8 +47,8 @@ if (['ONLY_DEV'].includes(THE_MODE)) {
 if (['ONLY_PROD'].includes(THE_MODE)) {
   new TheMainStack(app, stack_label, {
     env: {
-      region: process.env.CDK_DEFAULT_REGION,
-      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: SECRET_REGION,
+      account: AWS_ACCOUNT,
     },
   });
 }
@@ -63,8 +66,8 @@ if (['ONLY_PIPELINE'].includes(THE_MODE)) {
     process.env.stack_githubToken = github_token;
     new ThePipelineStack(app, namedPipelineStack_label, {
       env: {
-        region: process.env.CDK_DEFAULT_REGION,
-        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: SECRET_REGION,
+        account: AWS_ACCOUNT,
       },
     });
   });

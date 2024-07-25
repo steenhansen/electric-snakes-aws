@@ -1,3 +1,7 @@
+
+
+import console = require('console');
+
 import {
   BlockPublicAccess,
   Bucket,

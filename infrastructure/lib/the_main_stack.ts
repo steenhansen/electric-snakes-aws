@@ -7,7 +7,7 @@ import { RDS } from './constructs/RDS';
 import { S3 } from './constructs/S3';
 import { Route53 } from './constructs/Route53';
 import { ACM } from './constructs/ACM';
-
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { DynamoDB } from './constructs/DynamoDB';
 
 const THE_ENV = process.env.NODE_ENV || '';
@@ -51,11 +51,12 @@ export class TheMainStack extends Stack {
       hosted_zone: this.route53.hosted_zone,
     });
 
-    const cidr =
+    const the_cidr =
       process.env.NODE_ENV === 'Production' ? '10.0.0.0/16' : '10.1.0.0/16';
 
     this.vpc = new Vpc(this, myVpcEnv_label, {
-      cidr,
+
+      ipAddresses: ec2.IpAddresses.cidr(the_cidr),
       subnetConfiguration: [
         {
           cidrMask: 24,
@@ -65,7 +66,7 @@ export class TheMainStack extends Stack {
         {
           cidrMask: 24,
           name: 'compute',
-          subnetType: SubnetType.PRIVATE_WITH_NAT, // q-bert-deprecated
+          subnetType: SubnetType.PRIVATE_WITH_EGRESS, // q-bert-deprecated
         },
         {
           cidrMask: 28,

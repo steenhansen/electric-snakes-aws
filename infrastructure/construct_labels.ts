@@ -102,6 +102,12 @@ export function dynamoInlineSeederEnvLabel(the_env: string) {
 
 
 
+export function frontendDistributionEnvLabel(the_env: string) {
+  const frontendDistributionEnv_label = `Frontend-Distribution-${the_env}`;
+  return frontendDistributionEnv_label;
+}
+
+
 export function frontEndAliasRecordEnvLabel(the_env: string) {
   const frontEndAliasRecordEnv_label = `FrontendAliasRecord-${the_env}`;
   return frontEndAliasRecordEnv_label;
@@ -212,10 +218,7 @@ export function webBucketDeploymentEnvLabel(the_env: string) {
   return webBucketDeploymentEnv_label;
 }
 
-export function frontendDistributionEnvLabel(the_env: string) {
-  const frontendDistributionEnv_label = `Frontend-Distribution-${the_env}`;
-  return frontendDistributionEnv_label;
-}
+
 
 export function ecsEnvLabel(the_env: string) {
   const ecsEnv_label = `ECS-${the_env}`;

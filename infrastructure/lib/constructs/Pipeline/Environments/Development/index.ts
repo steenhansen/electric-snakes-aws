@@ -1,6 +1,6 @@
 /* ---------- External Libraries ---------- */
 import { SecretValue, Tags } from 'aws-cdk-lib';
-import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
+import { Artifact, Pipeline, PipelineType } from 'aws-cdk-lib/aws-codepipeline';
 import { Construct } from 'constructs';
 
 import {
@@ -187,6 +187,7 @@ export class DevelopmentPipeline extends Construct {
       backEndTestPipeline_label,
       {
         pipelineName: namedBackEndTest_label,
+        pipelineType: PipelineType.V1,
       },
     );
 

@@ -4,9 +4,9 @@ import console = require('console');
 
 /* ---------- External Libraries ---------- */
 import { SecretValue, Tags } from 'aws-cdk-lib';
-import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
+import { Artifact, Pipeline, PipelineType } from 'aws-cdk-lib/aws-codepipeline';
 import { Construct } from 'constructs';
-import { config } from 'dotenv';
+//import { config } from 'dotenv';
 
 
 
@@ -23,7 +23,7 @@ import {
 
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
-config({ path: '.env.production' });
+//config({ path: '.env.production' });
 
 import stack_config from '../../../../../config.json';
 const GITHUB_REPO = stack_config.GITHUB_REPO;
@@ -198,6 +198,7 @@ export class ProductionPipeline extends Construct {
       scope, backendTestPipelineEnv_label,
       {
         pipelineName: namedBackEndTestEnv_label,
+        pipelineType: PipelineType.V1,
       },
     );
 

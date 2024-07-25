@@ -10,7 +10,9 @@ import { createHash } from 'crypto';
 
 import { idFunctionSecurityGroupLabel, idResInitStackNameLabel, arnLambdaRegionAccountResInitStackNameLabel, idAwsSdkCallVerHashLabel } from '../../../../construct_labels';
 
+import stack_config from '../../../../config.json';
 
+const SECRET_REGION = stack_config.SECRET_REGION;
 
 export interface CDKResourceInitializerProps {
   config: { credentials_secret_name: string; };
@@ -39,7 +41,7 @@ export class CDKResourceInitializer extends Construct {
 
 
     const stack = Stack.of(this);
-
+    ///console.log("888999 stack.region", stack.region, "==", SECRET_REGION);
     const idFunctionSecurityGroup_label = idFunctionSecurityGroupLabel(id);
     const idResInitStackName_label = idResInitStackNameLabel(id, stack.stackName);
     const arnLambdaRegionAccountResInitStackName_label = arnLambdaRegionAccountResInitStackNameLabel(stack);

@@ -2,6 +2,8 @@ yarn
 
 yarn configurate   // to copy master configs
 
+yarn build:dev
+
 yarn start
 
 

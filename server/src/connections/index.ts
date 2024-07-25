@@ -1,5 +1,5 @@
 import mysql, { Pool } from 'mysql';
-import dotenv from 'dotenv';
+//import dotenv from 'dotenv';
 import {
   GetSecretValueCommand,
   GetSecretValueCommandInput,
@@ -9,7 +9,7 @@ import {
 import stack_config from '../config.json';
 const SECRET_REGION = stack_config.SECRET_REGION;
 
-dotenv.config();
+//dotenv.config();
 
 const STACK_NAME = stack_config.STACK_NAME;
 const THE_ENV = process.env.NODE_ENV || '';

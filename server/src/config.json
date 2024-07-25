@@ -2,6 +2,6 @@
   "domain_name": "steenhansen.click",
   "backend_subdomain": "backend-steen-hansen",
   "backend_dev_subdomain": "dev-backend-steen-hansen",
-  "SECRET_REGION": "us-west-2",
+  "SECRET_REGION": "us-east-1",
   "STACK_NAME": "ElSn"
 }

@@ -2,7 +2,7 @@ import console = require('console');
 
 /* ---------- External Libraries ---------- */
 import { SecretValue, Tags } from 'aws-cdk-lib';
-import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
+import { Artifact, Pipeline, PipelineType } from 'aws-cdk-lib/aws-codepipeline';
 import { Construct } from 'constructs';
 import {
   CodeBuildAction,
@@ -205,6 +205,7 @@ export class PipelineStack extends Construct {
       backEndTestPipeline_label,
       {
         pipelineName: namedPipelineEnv_label,
+        pipelineType: PipelineType.V1,
       },
     );
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import dotenv from 'dotenv';
+//import dotenv from 'dotenv';
 import cors from 'cors';
 import { OkPacket } from 'mysql';
 
@@ -7,7 +7,7 @@ import { Todo } from './@types';
 
 import { execute, init } from './connections';
 
-dotenv.config();
+//dotenv.config();
 
 const port = process.env.PORT || 80;
 
